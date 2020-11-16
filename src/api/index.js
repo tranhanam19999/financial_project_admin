@@ -16,6 +16,29 @@ export const getAdmin = (username, password) => {
         })
     })
 }
+export const deleteBook = async (item) => {
+    console.log('im delete item ', item)
+    let res = await fetch('http://localhost:4000/prod/deleteBook', {
+        method:'delete',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+    })
+    return res
+}
+export const updateBook = async (item) => {
+    console.log('im item ', item)
+    let res = await fetch('http://localhost:4000/prod/updateBook', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+    })
+    return res
+    
+}
 export const getAllBook = async () => {
     let res = await fetch('http://localhost:4000/prod/getAll', {
         method: 'get',
@@ -46,4 +69,4 @@ export const getAllTrans = async () => {
     let value = await res.json()
     return value
 }
-export default {getAdmin,getAllBook,getAllUser,getAllTrans}
+export default {getAdmin,getAllBook,getAllUser,getAllTrans,updateBook}

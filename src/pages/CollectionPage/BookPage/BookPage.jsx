@@ -10,20 +10,21 @@ const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
         return( <tr>
                     <td><img src={val.pictures[0]} width={150} height={150}/></td>
                     <td>{val.name}</td>
-                    <td>{val.price}</td>
-                    <td>{val.sale}</td>
+                    <td>{val.price}$</td>
+                    <td>{val.sale}%</td>
                     <td style={{textAlign:"center"}}>
-                        <button onClick={() => {setModalShow(true); setOptionType='details'; setCurrentItem(val)}} className="btn btn-info col-md-3"> 
+                        <button onClick={() => {setModalShow(true); setOptionType('details'); setCurrentItem(val)}} className="btn btn-info col-md-3"> 
                             <span className="icon text-center">
                                 <i className="fas fa-info"></i>
                             </span>
                         </button>
-                        <button className="btn btn-primary col-md-3 ml-1 mr-1">
+                        <button onClick={() => {setModalShow(true); setOptionType('update'); setCurrentItem(val)}} className="btn btn-primary col-md-3 ml-1 mr-1">
                             <span className="icon text-center">
                                 <i className="fas fa-edit"></i>
                             </span>
                         </button>
-                        <button className="btn btn-danger col-md-3"> 
+                        <button onClick={() => {setModalShow(true); setOptionType('delete'); setCurrentItem(val)}} 
+                        className="btn btn-danger col-md-3"> 
                             <span className="icon">
                                 <i className="fas fa-trash"></i>
                             </span>
@@ -35,12 +36,14 @@ const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
 const BookPage = () => {
     const [modal,setModalShow] = useState(false)
     const [optionType,setOptionType] = useState("details")
-    const [currentItem,setCurrentItem] = useState({})
+    
+    const listbook = useSelector(state => {return state.listbook})
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getBook())
         //document.onload = loadScripts()
     },[])
+    const [currentItem,setCurrentItem] = useState(listbook[0])
     return (
         <>
         <div id="content">
@@ -253,7 +256,8 @@ const BookPage = () => {
         </div>
       </div>
     </div>
-    <ModalInit collection = "book" show={modal} onHide={() => setModalShow(false)} optionType={optionType} item={currentItem}/>
+    {!currentItem ? <></> :
+    <ModalInit collection = "book" show={modal} onHide={() => setModalShow(false)} optionType={optionType} item={currentItem}/>}
     </>
     )
 }
