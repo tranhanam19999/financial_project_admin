@@ -1,11 +1,8 @@
 import React, { useEffect , useState} from 'react'
-import NavBar from '../../../components/Layout/NavBar'
-import Layout from '../../../components/Layout'
-import { loadScripts } from '../../../utils'
 import {useDispatch, useSelector} from 'react-redux'
 import {getUser} from '../../../store/listuser'
-
-const TableBody = () => {
+import ModalInit from '../../../components/Modal'
+const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
     const user = useSelector(state => {return state.listuser})
     return !user ? <></> :
     user.map(val => {
@@ -14,17 +11,37 @@ const TableBody = () => {
                     <td>{val.fullName}</td>
                     <td>{val.bankId}</td>
                     <td>{val.phoneNumber}</td>
-                    <td>3 Button</td>
+                    <td style={{textAlign:"center"}}>
+                        <button onClick={() => {setModalShow(true); setOptionType('details'); setCurrentItem(val)}} className="btn btn-info col-md-3"> 
+                            <span className="icon text-center">
+                                <i className="fas fa-info"></i>
+                            </span>
+                        </button>
+                        <button onClick={() => {setModalShow(true); setOptionType('update'); setCurrentItem(val)}} className="btn btn-primary col-md-3 ml-1 mr-1">
+                            <span className="icon text-center">
+                                <i className="fas fa-edit"></i>
+                            </span>
+                        </button>
+                        <button onClick={() => {setModalShow(true); setOptionType('delete'); setCurrentItem(val)}} 
+                        className="btn btn-danger col-md-3"> 
+                            <span className="icon">
+                                <i className="fas fa-trash"></i>
+                            </span>
+                        </button>
+                    </td>
                 </tr>)
         })
 }
 const UserPage = () => {
+    const [modal,setModalShow] = useState(false)
+    const [optionType,setOptionType] = useState("details")
     const dispatch = useDispatch()
-    
+    const listuser = useSelector(state => {return state.listuser})
     useEffect(() => {
         dispatch(getUser())
         //document.onload = loadScripts()
     },[])
+    const [currentItem,setCurrentItem] = useState(listuser[0])
     return (
         <>
         <div id="content">
@@ -223,7 +240,7 @@ const UserPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <TableBody/>
+                    <TableBody setModalShow={setModalShow} setOptionType={setOptionType} setCurrentItem={setCurrentItem}/>
                 </tbody>
                 <tfoot>
                   <tr>
@@ -240,6 +257,8 @@ const UserPage = () => {
         </div>
       </div>
       </div>
+      {!currentItem ? <></> :
+        <ModalInit collection = "user" show={modal} onHide={() => setModalShow(false)} optionType={optionType} item={currentItem}/>}
         </>
     )
 }

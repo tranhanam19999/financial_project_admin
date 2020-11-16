@@ -36,8 +36,7 @@ export const updateBook = async (item) => {
         },
         body: JSON.stringify(item)
     })
-    return res
-    
+    return res 
 }
 export const getAllBook = async () => {
     let res = await fetch('http://localhost:4000/prod/getAll', {
@@ -48,6 +47,27 @@ export const getAllBook = async () => {
     })
     let value = await res.json()
     return value
+}
+export const deleteUser = async (item) => {
+    let res = await fetch('http://localhost:4000/user/deleteUser', {
+        method:'delete',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+    })
+    return res
+}
+export const updateUser = async (item) => {
+    console.log('im item ', item)
+    let res = await fetch('http://localhost:4000/user/updateUser', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+    })
+    return res 
 }
 export const getAllUser = async () => {
     let res = await fetch('http://localhost:4000/user/getAll', {
@@ -69,4 +89,6 @@ export const getAllTrans = async () => {
     let value = await res.json()
     return value
 }
-export default {getAdmin,getAllBook,getAllUser,getAllTrans,updateBook}
+export default {getAdmin,getAllTrans,
+                getAllBook,updateBook,deleteBook,
+                getAllUser,deleteUser,updateUser}

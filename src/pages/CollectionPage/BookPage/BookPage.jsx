@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {loadScripts} from '../../../utils/'
 import {getBook} from '../../../store/listbook'
 import ModalInit from '../../../components/Modal'
 const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
@@ -36,9 +35,8 @@ const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
 const BookPage = () => {
     const [modal,setModalShow] = useState(false)
     const [optionType,setOptionType] = useState("details")
-    
-    const listbook = useSelector(state => {return state.listbook})
     const dispatch = useDispatch()
+    const listbook = useSelector(state => {return state.listbook})
     useEffect(() => {
         dispatch(getBook())
         //document.onload = loadScripts()
