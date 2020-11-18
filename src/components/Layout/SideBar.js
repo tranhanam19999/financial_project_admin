@@ -78,7 +78,7 @@ const SideBar = () => {
                     <h6 className="collapse-header">Login Screens:</h6>
                     <Link className="collapse-item" to="/User">Users</Link>
                     <Link className="collapse-item" to="/Book" >Books</Link>
-                    <Link className="collapse-item" to="/Home">Transactions</Link>
+                    <Link className="collapse-item" to="/Tran">Transactions</Link>
                     <div className="collapse-divider" />
                     <h6 className="collapse-header">Other Pages:</h6>
                     <a className="collapse-item" href="404.html">404 Page</a>

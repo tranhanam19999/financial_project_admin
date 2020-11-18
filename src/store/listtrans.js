@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit'
 import {getAllTrans} from '../api/'
 const slice = createSlice({
-    name:'listbook',
+    name:'listtrans',
     initialState: [],
     reducers: {
         getItemTrans: (state,action) => {
@@ -15,6 +15,7 @@ const {getItemTrans} = slice.actions
 export const getTrans = () => async dispatch => {
     try {
         const res = await getAllTrans()
+        console.log('im res ', res)
         dispatch(getItemTrans(res))
     }
     catch (e) {

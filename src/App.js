@@ -1,13 +1,13 @@
-import logo from './logo.svg'
+
 import './App.css'
 import AuthPage from './pages/AuthPage/AuthPage'
 import HomePage from './pages/HomePage/HomePage'
 import UserPage from './pages/CollectionPage/UserPage/UserPage'
 import BookPage from './pages/CollectionPage/BookPage/BookPage'
+import TranPage from './pages/CollectionPage/TranPage/TranPage'
 import {Route} from 'react-router-dom'
 import SideBar from './components/Layout/SideBar'
-import { useEffect } from 'react'
-import { loadScripts } from './utils'
+
 function App() {
   return (
     <div className="App" >
@@ -18,6 +18,7 @@ function App() {
           <Route exact path="/Home" component={HomePage}/>
           <Route exact path="/User" component={UserPage}/>
           <Route exact path="/Book" component={BookPage}/>
+          <Route exact path="/Tran" component={TranPage}/>
         </div>
       </div>
     </div>

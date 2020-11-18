@@ -6,7 +6,7 @@ const ModalInit = (props) => {
     switch (props.collection) {
         case 'user':
             return <UserModal {...props} />
-        case 'trans':
+        case 'tran':
             return <TransModal {...props} />
         case 'book':
             return <BookModal {...props} /> 
