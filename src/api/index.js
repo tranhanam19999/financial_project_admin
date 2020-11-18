@@ -108,7 +108,17 @@ export const getAllTrans = async () => {
     let value = await res.json()
     return value
 }
-export default {getAdmin,
+export const approveTran = async (item) => {
+    let res = await fetch('http://localhost:4000/tran/approveTran', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+    })
+    return res 
+}
+export default {getAdmin,approveTran,
                 getAllTrans,updateTran,deleteTran,
                 getAllBook,updateBook,deleteBook,
                 getAllUser,deleteUser,updateUser}

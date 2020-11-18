@@ -8,13 +8,6 @@ const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
     return !listtrans ? <></> :
     listtrans.map(val => {
         return( <tr>
-                {/* <tr>
-                    <th>Product</th>
-                    <th>User's Name</th>
-                    <th>User's BankID</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                  </tr> */}
                     <td>{val.product.map((val,i) => {
                         return val.name + ". "
                     })}</td>

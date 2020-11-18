@@ -7,6 +7,7 @@ import BookPage from './pages/CollectionPage/BookPage/BookPage'
 import TranPage from './pages/CollectionPage/TranPage/TranPage'
 import {Route} from 'react-router-dom'
 import SideBar from './components/Layout/SideBar'
+import ApprovePage from './pages/Approve/ApprovePage'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route exact path="/User" component={UserPage}/>
           <Route exact path="/Book" component={BookPage}/>
           <Route exact path="/Tran" component={TranPage}/>
+          <Route exact path="/Approve" component={ApprovePage}/>
         </div>
       </div>
     </div>
