@@ -144,12 +144,12 @@ const BookModal = (props) => {
                                 <b>Number Of Pages:</b>
                                 <input type="text" className="form-control" 
                                 disabled={!onCheck(props.optionType)} 
-                                defaultValue={props.item.info.numberOfPages}
+                                defaultValue={props.item.info.numberOfPage}
                                 onChange={(e) => setInitBook({
                                     ...initBook,
                                     info: {
                                         ...initBook.info,
-                                        numberOfPages: e.target.value
+                                        numberOfPage: e.target.value
                                     }
                                 })}
                                 />

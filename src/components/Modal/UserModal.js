@@ -68,15 +68,22 @@ const UserModal = (props) => {
                         <div className = "form-row pb-2">
                             <div className = "col">
                                 <b>FullName: </b>
-                                <input type="text" 
-                                    className="form-control" 
-                                    disabled={!onCheck(props.optionType)} 
-                                    defaultValue={props.item.fullName}
-                                    onChange={(e) => setInitUser({
-                                        ...initUser,
-                                        fullName: e.target.value
-                                    })}
-                                    />
+                                <div className="input-group">
+                                    <input type="text" 
+                                        className="form-control" 
+                                        disabled={!onCheck(props.optionType)} 
+                                        defaultValue={props.item.fullName}
+                                        onChange={(e) => setInitUser({
+                                            ...initUser,
+                                            fullName: e.target.value
+                                        })}
+                                        />
+                                    <div className="input-group-append">
+                                        <button className="btn btn-success" 
+                                        type="button" 
+                                        onClick={() => alert(props.item._id)}>Id</button>
+                                    </div>
+                                </div>
                             </div> 
                             <div className="col">
                                 <b>Username: </b>

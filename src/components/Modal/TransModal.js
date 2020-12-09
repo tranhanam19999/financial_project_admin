@@ -18,7 +18,7 @@ const TransModal = (props) => {
         const updateData = async (val) => {
             let result = await updateTran(val)
             await dispatch(getTrans())
-            alert('Response: ' + await result.json())
+            alert('Successfully Updated!')
         }
         switch (props.optionType) {
             case 'delete': 
@@ -43,7 +43,6 @@ const TransModal = (props) => {
             return true
         return false
     }
-    console.log(props.optionType)
     return (
         <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered >
             <Modal.Header closeButton>
@@ -58,7 +57,7 @@ const TransModal = (props) => {
                         <b>User's Name: </b>
                         <input type="text" 
                         className="form-control" 
-                        disabled={!onCheck(props.optionType)} 
+                        disabled={true} 
                         defaultValue={props.item.user.fullName}
                         />
                     </div>
@@ -66,7 +65,7 @@ const TransModal = (props) => {
                         <b>User's BankID: </b>
                         <input type="text" 
                         className="form-control" 
-                        disabled={!onCheck(props.optionType)} 
+                        disabled={true} 
                         defaultValue={props.item.user.bankId}
                         />
                     </div>
@@ -74,7 +73,7 @@ const TransModal = (props) => {
                         <b>User's Phonenumber: </b>
                         <input type="text" 
                         className="form-control" 
-                        disabled={!onCheck(props.optionType)} 
+                        disabled={true} 
                         defaultValue={props.item.user.phoneNumber}
                         />
                     </div>
@@ -82,7 +81,7 @@ const TransModal = (props) => {
                         <b>User's Email: </b>
                         <input type="text" 
                         className="form-control" 
-                        disabled={!onCheck(props.optionType)} 
+                        disabled={true} 
                         defaultValue={props.item.user.local.email}
                         />
                     </div>
@@ -92,7 +91,7 @@ const TransModal = (props) => {
                     <b>Products: </b>
                         <input type="text" 
                         className="form-control" 
-                        disabled={!onCheck(props.optionType)} 
+                        disabled={true} 
                         defaultValue={props.item.product.map((val => {
                             return val.name
                         }))}
@@ -102,17 +101,17 @@ const TransModal = (props) => {
                         <b>Total Price: </b>
                         <input type="text" 
                         className="form-control" 
-                        disabled={!onCheck(props.optionType)} 
-                        defaultValue={'$' + props.item.product.reduce((sum,val) => {																										
+                        disabled={true} 
+                        defaultValue={props.item.product.reduce((sum,val) => {																										
                             return parseInt(sum += (val.price*(val.sale/100)))
-                        },0)}
+                        },0)+ 'đ'}
                         />
                     </div>
                     <div className="col">
                         <b>User's Phonenumber: </b>
                         <input type="text" 
                         className="form-control" 
-                        disabled={!onCheck(props.optionType)} 
+                        disabled={true} 
                         defaultValue={props.item.user.phoneNumber}
                         />
                     </div>
@@ -122,23 +121,30 @@ const TransModal = (props) => {
                         <b>Date: </b>
                         <input type="text" 
                         className="form-control" 
-                        disabled={!onCheck(props.optionType)} 
+                        disabled={true} 
                         defaultValue={props.item.date}
                         />
                     </div>
                     <div className="col">
                         <b>Status: </b>
-                        <input type="text" 
+                        {/* <input type="text" 
                         className="form-control" 
                         disabled={!onCheck(props.optionType)} 
                         defaultValue={props.item.status}
-                        />
+                        /> */}
+                        <select className="form-control" defaultValue={props.item.status} onChange={(e) => setInitTran({
+                            ...initTran,
+                            status: e.target.value
+                        })}>
+                            <option value="PENDING">Pending</option>
+                            <option value="SUCCESS">Success</option> 
+                        </select>
                     </div>
                     <div className="col">
                         <b>Ratings: </b>
                         <input type="text" 
                         className="form-control" 
-                        disabled={!onCheck(props.optionType)} 
+                        disabled={true} 
                         defaultValue={props.item.rating ? props.item.rating : 'User not rated yet'}
                         />
                     </div>      
@@ -148,7 +154,7 @@ const TransModal = (props) => {
                         <b>User's Review: </b>
                         <input type="text" 
                         className="form-control" 
-                        disabled={!onCheck(props.optionType)} 
+                        disabled={true} 
                         defaultValue={props.item.review ? props.item.review : 'User not rated yet'}
                         />
                     </div>

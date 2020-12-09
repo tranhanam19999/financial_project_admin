@@ -1,15 +1,20 @@
 import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import _ from 'lodash/array'
 import {getBook} from '../../../store/listbook'
+import CreateBook from '../../../components/Modal/CreateModal/Book'
 import ModalInit from '../../../components/Modal'
-const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
-    const listbook = useSelector(state => {return state.listbook})
-    return !listbook ? <></> :
-    listbook.map(val => {
+
+const TableBody = ({setModalShow, setOptionType, setCurrentItem,page,listbook}) => {
+    //const listbook = useSelector(state => {return state.listbook})
+    let listBookPaginated = (listbook == []) ? [] : _.chunk(listbook,9)
+    let temp = listBookPaginated[page-1]
+    return !temp ? <></> :
+    temp.map(val => {
         return( <tr>
-                    <td><img src={val.pictures[0]} width={150} height={150}/></td>
+                    <td><img src={val.pictures} width={150} height={150}/></td>
                     <td>{val.name}</td>
-                    <td>{val.price}$</td>
+                    <td>{val.price}đ</td>
                     <td>{val.sale}%</td>
                     <td style={{textAlign:"center"}}>
                         <button onClick={() => {setModalShow(true); setOptionType('details'); setCurrentItem(val)}} className="btn btn-info col-md-3"> 
@@ -33,6 +38,13 @@ const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
         })
 }
 const BookPage = () => {
+
+    let pageArray = []
+    const [active, setActive] = useState(0)
+    const [page,setPage] = useState(1)
+
+    const listBook = useSelector(state => {return state.listbook})
+    const [createModal,setCreateModal] = useState(false)
     const [modal,setModalShow] = useState(false)
     const [optionType,setOptionType] = useState("details")
     const dispatch = useDispatch()
@@ -41,6 +53,9 @@ const BookPage = () => {
         dispatch(getBook())
         //document.onload = loadScripts()
     },[])
+    for(let i = 1; i <= Math.ceil(listBook.length/9);i++) {
+        pageArray.push(i)
+    }
     const [currentItem,setCurrentItem] = useState(listbook[0])
     return (
         <>
@@ -216,44 +231,60 @@ const BookPage = () => {
                 </ul>
                 </nav>
                 <div className="container-fluid">
-        {/* Page Heading */}
-        <h1 className="h3 mb-2 text-gray-800">Tables</h1>
-        <p className="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
-        {/* DataTales Example */}
-        <div className="card shadow mb-4">
-          <div className="card-header py-3">
-            <h6 className="m-0 font-weight-bold text-primary">DataTables Example</h6>
-          </div>
-          <div className="card-body">
-            <div className="table-responsive">
-              <table className="table table-bordered" id="dataTable" width="100%" cellSpacing={0}>
-                <thead>
-                  <tr>
-                    <th>Pictures</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Sale</th>
-                    <th>Modification</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <TableBody setModalShow={setModalShow} setOptionType={setOptionType} setCurrentItem={setCurrentItem}/>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th>PhotoUser</th>
-                    <th>FullName</th>
-                    <th>BankID</th>
-                    <th>PhoneNumber</th>
-                    <th>Modification</th>
-                  </tr>
-                </tfoot>          
-              </table>
+                    <div className="card shadow mb-4">
+                        <div className="card-header py-3">
+                            <h6 className="m-0 font-weight-bold text-primary">Book Page</h6>
+                            
+                        </div>
+                    <div className="card-body">
+                        <div className="table-responsive">
+                            <a className="m-0 text-primary" style={{cursor:'pointer'}} onClick={() => setCreateModal(!createModal)}>Create a new Book</a>
+                            <table className="table table-bordered" id="dataTable" width="100%" cellSpacing={0}>
+                                <thead>
+                                    <tr>
+                                        <th>Pictures</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Sale</th>
+                                        <th>Modification</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <TableBody setModalShow={setModalShow} 
+                                    setOptionType={setOptionType} 
+                                    setCurrentItem={setCurrentItem} 
+                                    page={page}
+                                    listbook={listBook}/>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>PhotoUser</th>
+                                        <th>FullName</th>
+                                        <th>BankID</th>
+                                        <th>PhoneNumber</th>
+                                        <th>Modification</th>
+                                    </tr>
+                                </tfoot>          
+                            </table>
+                        </div>
+                        <div>
+                            <nav aria-label="Page navigation example" style={{display:'flex',justifyContent: 'center'}}>
+                                <ul className="pagination">
+                                    {(() => {
+                                            return (listbook == []) ? <></> : pageArray.map((val,i) => {
+                                                    return <li className={"page-item " + (i == active ? " active" : null)} onClick={() => setPage(val)}>
+                                                        <a className="page-link" href="#" onClick={() => setActive(i)}>{val}</a>
+                                                    </li>
+                                            })                                                            
+                                        })()}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
+    {!createModal ? <></> : <CreateBook show={createModal} onHide={() => setCreateModal(false)} />}
     {!currentItem ? <></> :
     <ModalInit collection = "book" show={modal} onHide={() => setModalShow(false)} optionType={optionType} item={currentItem}/>}
     </>

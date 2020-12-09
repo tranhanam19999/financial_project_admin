@@ -14,8 +14,8 @@ export default slice.reducer
 const {getItemTrans} = slice.actions
 export const getTrans = () => async dispatch => {
     try {
+        console.log('E Chuong!')
         const res = await getAllTrans()
-        console.log('im res ', res)
         dispatch(getItemTrans(res))
     }
     catch (e) {

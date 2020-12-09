@@ -17,7 +17,6 @@ export const getAdmin = (username, password) => {
     })
 }
 export const deleteBook = async (item) => {
-    console.log('im delete item ', item)
     let res = await fetch('http://localhost:4000/prod/deleteBook', {
         method:'delete',
         headers: {
@@ -88,14 +87,15 @@ export const deleteTran = async (item) => {
     return res
 }
 export const updateTran = async (item) => {
-    let res = await fetch('http://localhost:4000/user/updateUser', {
+    let res = await fetch('http://localhost:4000/tran/updateTran', {
         method: 'post',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(item)
     })
-    return res 
+    let value = await res.json()
+    return value
 }
 export const getAllTrans = async () => {
     let res = await fetch('http://localhost:4000/tran/getAll', {
@@ -104,7 +104,6 @@ export const getAllTrans = async () => {
             'Content-Type': 'application/json'
         },
     })
-    console.log('im res ', res)
     let value = await res.json()
     return value
 }
@@ -118,7 +117,17 @@ export const approveTran = async (item) => {
     })
     return res 
 }
+export const createNewBook = async (book) => {
+    let res = await fetch('http://localhost:4000/prod/createBook', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(book)
+    })
+    return res 
+}
 export default {getAdmin,approveTran,
                 getAllTrans,updateTran,deleteTran,
-                getAllBook,updateBook,deleteBook,
+                getAllBook,updateBook,deleteBook, createNewBook,
                 getAllUser,deleteUser,updateUser}

@@ -12,7 +12,6 @@ const AuthPage = () => {
     //     document.onload=loadScripts()
     // },[])
     if(user) {
-        console.log('hi ', user)
         return (
             <Redirect to="/Home"/>
         )

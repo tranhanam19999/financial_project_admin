@@ -1,13 +1,17 @@
 import React,{useState,useEffect} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
+import _ from "lodash/array"
 import {getTrans} from '../../../store/listtrans'
 import ModalInit from '../../../components/Modal'
 
-const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
-    const listtrans = useSelector(state => {return state.listtrans})
-    return !listtrans ? <></> :
-    listtrans.map(val => {
-        return( <tr>
+
+const TableBody = ({setModalShow, setOptionType, setCurrentItem,id,page,listtran}) => {
+    //const listtrans = useSelector(state => {return state.listtrans})
+    let listTranPaginated = (listtran == []) ? [] : _.chunk(listtran,9)
+    let temp = listTranPaginated[page-1]
+    return !temp ? <></> :
+    temp.map(val => {
+        return !id ? <tr>
                     <td>{val.product.map((val,i) => {
                         return val.name + ". "
                     })}</td>
@@ -33,20 +37,61 @@ const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
                             </span>
                         </button>
                     </td>
-                </tr>)
+                </tr>
+            : ( 
+                id && val._id == id ?
+                <tr>
+                    <td>{val.product.map((val,i) => {
+                        return val.name + ". "
+                    })}</td>
+                    <td>{val.user.fullName}</td>
+                    <td>{val.user.bankId}</td>
+                    <td>{val.date}</td>
+                    <td>{val.status}</td>
+                    <td style={{textAlign:"center"}}>
+                        <button onClick={() => {setModalShow(true); setOptionType('details'); setCurrentItem(val)}} className="btn btn-info col-md-3"> 
+                            <span className="icon text-center">
+                                <i className="fas fa-info"></i>
+                            </span>
+                        </button>
+                        <button onClick={() => {setModalShow(true); setOptionType('update'); setCurrentItem(val)}} className="btn btn-primary col-md-3 ml-1 mr-1">
+                            <span className="icon text-center">
+                                <i className="fas fa-edit"></i>
+                            </span>
+                        </button>
+                        <button onClick={() => {setModalShow(true); setOptionType('delete'); setCurrentItem(val)}} 
+                        className="btn btn-danger col-md-3"> 
+                            <span className="icon">
+                                <i className="fas fa-trash"></i>
+                            </span>
+                        </button>
+                    </td>
+                </tr> : <></>
+            )
         })
 }
 
 const TranPage = () => {
+    let pageArray = []
+    const [active, setActive] = useState(0)
+    const [page,setPage] = useState(1)
+
+    const [id,setID] = useState(null)
     const [modal,setModalShow] = useState(false)
     const [optionType,setOptionType] = useState("details")
     const dispatch = useDispatch()
     const listtrans = useSelector(state => {return state.listtrans})
     const [currentItem,setCurrentItem] = useState(listtrans[0])
+
     useEffect(() => {
         dispatch(getTrans())
         //document.onload = loadScripts()
     },[])
+
+    for(let i = 1; i <= Math.ceil(listtrans.length/9);i++) {
+        pageArray.push(i)
+    }
+
     return (
         <>
         <div id="content">
@@ -222,46 +267,62 @@ const TranPage = () => {
                 </nav> 
             {/* <Layout/> */}
             {/* <div id="content-wrapper" className="d-flex flex-column"> */}
-        <div className="container-fluid">
-        {/* Page Heading */}
-        <h1 className="h3 mb-2 text-gray-800">Tables</h1>
-        <p className="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
-        {/* DataTales Example */}
-        <div className="card shadow mb-4">
-          <div className="card-header py-3">
-            <h6 className="m-0 font-weight-bold text-primary">DataTables Example</h6>
-          </div>
-          <div className="card-body">
-            <div className="table-responsive">
-              <table className="table table-bordered" id="dataTable" width="100%" cellSpacing={0}>
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>User's Name</th>
-                    <th>User's BankID</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Modification</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <TableBody setModalShow={setModalShow} setOptionType={setOptionType} setCurrentItem={setCurrentItem}/>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th>Product</th>
-                    <th>User's Name</th>
-                    <th>User's BankID</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Modification</th>
-                  </tr>
-                </tfoot>          
-              </table>
+            <div className="container-fluid">
+            {/* DataTales Example */}
+            <div className="card shadow mb-4">
+                <div className="card-header py-3">
+                    <h6 className="m-0 font-weight-bold text-primary mb-1">Transaction's ID</h6>
+                    <input className="form-control" placeholder="Paste the ID here" onChange={(e) => setID(e.target.value)}/>
+                </div>
+                <div className="card-body">
+                    <div className="table-responsive">
+                        <table className="table table-bordered" id="dataTable" width="100%" cellSpacing={0}>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>User's Name</th>
+                                    <th>User's BankID</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Modification</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <TableBody setModalShow={setModalShow} 
+                                setOptionType={setOptionType} 
+                                setCurrentItem={setCurrentItem} 
+                                id={id}
+                                page={page}
+                                listtran={listtrans}/>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>User's Name</th>
+                                    <th>User's BankID</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Modification</th>
+                                </tr>
+                            </tfoot>          
+                        </table>
+                    </div>
+                    <div>
+                        <nav aria-label="Page navigation example" style={{display:'flex',justifyContent: 'center'}}>
+                            <ul className="pagination">
+                                {(() => {
+                                        return (listtrans == []) ? <></> : pageArray.map((val,i) => {
+                                                return <li className={"page-item " + (i == active ? " active" : null)} onClick={() => setPage(val)}>
+                                                    <a className="page-link" href="#" onClick={() => setActive(i)}>{val}</a>
+                                                </li>
+                                        })                                                            
+                                    })()}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
       </div>
       {!currentItem ? <></> :
         <ModalInit collection = "tran" show={modal} onHide={() => setModalShow(false)} optionType={optionType} item={currentItem}/>}

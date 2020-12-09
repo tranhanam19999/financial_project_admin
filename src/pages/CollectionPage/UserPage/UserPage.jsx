@@ -1,13 +1,18 @@
 import React, { useEffect , useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+import _ from "lodash/array"
 import {getUser} from '../../../store/listuser'
 import ModalInit from '../../../components/Modal'
-const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
-    const user = useSelector(state => {return state.listuser})
-    return !user ? <></> :
-    user.map(val => {
+
+
+const TableBody = ({setModalShow, setOptionType, setCurrentItem,page,listuser}) => {
+    //const user = useSelector(state => {return state.listuser})
+    let listUserPaginated = (listuser == []) ? [] : _.chunk(listuser,9)
+    let temp = listUserPaginated[page-1]
+    return !temp ? <></> :
+    temp.map(val => {
         return( <tr>
-                    <td><img src={val.photoUser}/></td>
+                    <td><img src={val.photoUser} height={100} width={100}/></td>
                     <td>{val.fullName}</td>
                     <td>{val.bankId}</td>
                     <td>{val.phoneNumber}</td>
@@ -33,6 +38,11 @@ const TableBody = ({setModalShow, setOptionType, setCurrentItem}) => {
         })
 }
 const UserPage = () => {
+
+    let pageArray = []
+    const [active, setActive] = useState(0)
+    const [page,setPage] = useState(1)
+
     const [modal,setModalShow] = useState(false)
     const [optionType,setOptionType] = useState("details")
     const dispatch = useDispatch()
@@ -41,6 +51,11 @@ const UserPage = () => {
         dispatch(getUser())
         //document.onload = loadScripts()
     },[])
+
+    for(let i = 1; i <= Math.ceil(listuser.length/9);i++) {
+        pageArray.push(i)
+    }
+
     const [currentItem,setCurrentItem] = useState(listuser[0])
     return (
         <>
@@ -218,44 +233,59 @@ const UserPage = () => {
            
             {/* <Layout/> */}
             {/* <div id="content-wrapper" className="d-flex flex-column"> */}
-        <div className="container-fluid">
-        {/* Page Heading */}
-        <h1 className="h3 mb-2 text-gray-800">Tables</h1>
-        <p className="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
-        {/* DataTales Example */}
-        <div className="card shadow mb-4">
-          <div className="card-header py-3">
-            <h6 className="m-0 font-weight-bold text-primary">DataTables Example</h6>
-          </div>
-          <div className="card-body">
-            <div className="table-responsive">
-              <table className="table table-bordered" id="dataTable" width="100%" cellSpacing={0}>
-                <thead>
-                  <tr>
-                    <th>PhotoUser</th>
-                    <th>FullName</th>
-                    <th>BankID</th>
-                    <th>PhoneNumber</th>
-                    <th>Modification</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <TableBody setModalShow={setModalShow} setOptionType={setOptionType} setCurrentItem={setCurrentItem}/>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th>PhotoUser</th>
-                    <th>FullName</th>
-                    <th>BankID</th>
-                    <th>PhoneNumber</th>
-                    <th>Modification</th>
-                  </tr>
-                </tfoot>          
-              </table>
+            <div className="container-fluid">
+
+            <div className="card shadow mb-4">
+                <div className="card-header py-3">
+                    <h6 className="m-0 font-weight-bold text-primary">User Page</h6>
+                </div>
+                <div className="card-body">
+                    <div className="table-responsive">
+                        <table className="table table-bordered" id="dataTable" width="100%" cellSpacing={0}>
+                            <thead>
+                                <tr>
+                                    <th>PhotoUser</th>
+                                    <th>FullName</th>
+                                    <th>BankID</th>
+                                    <th>PhoneNumber</th>
+                                    <th>Modification</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <TableBody 
+                                setModalShow={setModalShow} 
+                                setOptionType={setOptionType} 
+                                setCurrentItem={setCurrentItem}
+                                page={page}
+                                listuser={listuser}/>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>PhotoUser</th>
+                                    <th>FullName</th>
+                                    <th>BankID</th>
+                                    <th>PhoneNumber</th>
+                                    <th>Modification</th>
+                                </tr>
+                            </tfoot>          
+                        </table>
+                    </div>
+                    <div>
+                        <nav aria-label="Page navigation example" style={{display:'flex',justifyContent: 'center'}}>
+                            <ul className="pagination">
+                                {(() => {
+                                        return (listuser == []) ? <></> : pageArray.map((val,i) => {
+                                                return <li className={"page-item " + (i == active ? " active" : null)} onClick={() => setPage(val)}>
+                                                    <a className="page-link" href="#" onClick={() => setActive(i)}>{val}</a>
+                                                </li>
+                                        })                                                            
+                                    })()}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
       </div>
       {!currentItem ? <></> :
         <ModalInit collection = "user" show={modal} onHide={() => setModalShow(false)} optionType={optionType} item={currentItem}/>}

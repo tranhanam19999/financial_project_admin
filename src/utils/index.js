@@ -22,7 +22,6 @@ const loadScripts = () => {
                 script.src = src
                 script.async = false
                 script.defer = true
-                console.log('hi im script ', script.src)
                 externalScripts.appendChild(script)
                 resolve()
             }
