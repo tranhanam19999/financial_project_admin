@@ -31,13 +31,13 @@ const AuthPage = () => {
                                 </div>
                                 <form className="user">
                                     <div className="form-group">
-                                        <input type="email" className="form-control form-control-user" 
-                                        id="exampleInputEmail" aria-describedby="emailHelp" 
-                                        placeholder="Enter Email Address..." 
+                                        <input type="email" className="form-control form-control-user"
+                                        id="exampleInputEmail" aria-describedby="emailHelp"
+                                        placeholder="Enter Email Address..."
                                         onChange={(e) => SetUSN(e.target.value)}/>
                                     </div>
                                     <div className="form-group">
-                                        <input type="password" className="form-control form-control-user" 
+                                        <input type="password" className="form-control form-control-user"
                                         id="exampleInputPassword" placeholder="Password"
                                         onChange={(e) => SetPWD(e.target.value)} />
                                     </div>
@@ -51,19 +51,19 @@ const AuthPage = () => {
                                         Login
                                     </a>
                                     <hr />
-                                    <a href="index.html" className="btn btn-google btn-user btn-block">
+                                    <a className="btn btn-google btn-user btn-block">
                                         <i className="fab fa-google fa-fw" /> Login with Google
                                     </a>
-                                    <a href="index.html" className="btn btn-facebook btn-user btn-block">
+                                    <a className="btn btn-facebook btn-user btn-block">
                                         <i className="fab fa-facebook-f fa-fw" /> Login with Facebook
                                     </a>
                                 </form>
                                 <hr />
                                 <div className="text-center">
-                                    <a className="small" href="forgot-password.html">Forgot Password?</a>
+                                    <a className="small">Forgot Password?</a>
                                 </div>
                                 <div className="text-center">
-                                    <a className="small" href="register.html">Create an Account!</a>
+                                    <a className="small">Create an Account!</a>
                                 </div>
                             </div>
                         </div>

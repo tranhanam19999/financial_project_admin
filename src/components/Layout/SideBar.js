@@ -4,8 +4,8 @@ import {Link} from 'react-router-dom'
 const SideBar = () => {
     const [accordion,toggleAccordion] = useState(false)
     return (
-        <ul className={!accordion 
-                        ? "navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" 
+        <ul className={!accordion
+                        ? "navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
                         : "navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled"} id="accordionSidebar">
             {/* Sidebar - Brand */}
             <a className="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -30,7 +30,7 @@ const SideBar = () => {
             </div>
             {/* Nav Item - Pages Collapse Menu */}
             <li className="nav-item">
-                <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                <a className="nav-link collapsed" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
                 <i className="fas fa-fw fa-folder" />
                 <span>Collections</span>
                 </a>
